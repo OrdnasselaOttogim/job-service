@@ -1,5 +1,7 @@
-package com.example.jobservice.job;
+package com.example.jobservice.service;
 
+import com.example.jobservice.repository.JobRepository;
+import com.example.jobservice.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +68,7 @@ public class JobService {
         }
 
         if (payment != null){
-            job.setPayment(Integer.parseInt(payment));
+            job.setCategory(payment);
         }
 
     }

@@ -1,6 +1,5 @@
-package com.example.jobservice.job;
+package com.example.jobservice.model;
 
-import com.example.jobservice.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,16 +17,16 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "job_sequence")
     private Long id;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String address;
-    private int payment;
-    //User owner;
+    private String category;
 
 
-    public Job(String title, String description, String address, int payment) {
+    public Job(String title, String description, String address, String category) {
         this.title = title;
         this.description = description;
         this.address = address;
-        this.payment = payment;
+        this.category = category;
     }
 }
