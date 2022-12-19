@@ -5,6 +5,8 @@ import com.example.jobservice.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +28,10 @@ public class JobService {
         return jobRepository.findAll();
     }
 
+    public Optional<Job> getJob(Long id) {
+        return jobRepository.findById(id);
+    }
+
 
     public void postJob(Job job) {
         Optional<Job> jobOptional = jobRepository.findJobByTitle(job.getTitle());
@@ -35,20 +41,36 @@ public class JobService {
         jobRepository.save(job);
     }
 
+    public void postJobParams(String title, String description, String address, String category) {
+        jobRepository.save(new Job(title, description, address, category));
+    }
 
-    public void deleteJob(Long jobId) {
-        boolean exists = jobRepository.existsById(jobId);
+
+    public void deleteJob(Long id) {
+        boolean exists = jobRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException(
-                    "job with id: " + jobId + " doesn't exist"
+                    "job with id: " + id + " doesn't exist"
             );
         }
-        jobRepository.deleteById(jobId);
+        jobRepository.deleteById(id);
+    }
+
+
+    public Job putJob(Job newJob, Long id){
+        return jobRepository.findById(id)
+                .map(job -> {
+                    job.setTitle(newJob.getTitle());
+                    job.setDescription(newJob.getDescription());
+                    job.setAddress(newJob.getAddress());
+                    job.setCategory(newJob.getCategory());
+                    return jobRepository.save(job);
+                }).orElseThrow();
     }
 
 
     @Transactional
-    public void putJob(Long jobId, String newTitle, String description, String address, String payment) {
+    public void putJobParams(Long jobId, String newTitle, String description, String address, String payment) {
         Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalStateException(
                 "job with id=" + jobId + " does not exist"
         ));
@@ -72,6 +94,8 @@ public class JobService {
         }
 
     }
+
+
 
 
 
