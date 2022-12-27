@@ -2,6 +2,7 @@ package com.example.jobservice.controller;
 
 import com.example.jobservice.model.Job;
 import com.example.jobservice.service.JobService;
+import com.example.jobservice.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,11 @@ public class JobController {
 
 
     private final JobService jobService;
+    private final MapService mapService;
     @Autowired
-    public JobController(JobService jobService) {
+    public JobController(JobService jobService, MapService mapService) {
         this.jobService = jobService;
+        this.mapService = mapService;
     }
 
     @GetMapping
@@ -29,7 +32,11 @@ public class JobController {
 
     @GetMapping("/{id}")
     public Optional<Job> getJob(@PathVariable Long id){
-        return jobService.getJob(id);
+        Optional<Job> job = jobService.getJob(id);
+        if (job.isPresent()){
+            job.get().setItineraries(mapService.getItineraries());
+        }
+        return job;
     }
 
 
