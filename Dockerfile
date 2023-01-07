@@ -1,5 +1,7 @@
-FROM openjdk:11
+FROM openjdk:17
 
-COPY target/job-service-0.0.1-SNAPSHOT.jar /etc/app.jar
+COPY target/job-service.jar job-service.jar
 
-ENTRYPOINT ["java","-jar","/etc/app.jar"]
+ENTRYPOINT ["java","-jar","job-service.jar"]
+
+EXPOSE 8082
