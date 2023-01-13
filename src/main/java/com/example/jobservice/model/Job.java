@@ -25,7 +25,7 @@ public class Job {
     private String category;
 
     @Transient
-    private Map<String, Itinerary> itineraries;
+    private Position position;
 
     public Job(String title, String description, String address, String category) {
         this.title = title;
@@ -34,12 +34,7 @@ public class Job {
         this.category = category;
     }
 
-
-    public Map<String, Itinerary> getItineraries() {
-        return itineraries;
-    }
-
-    public void setItineraries(Map<String, Itinerary> itineraries) {
-        this.itineraries = itineraries;
+    public void setPosition(Position position){
+        this.position = position;
     }
 }

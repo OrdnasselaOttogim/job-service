@@ -1,12 +1,15 @@
 package com.example.jobservice.controller;
 
+import com.example.jobservice.model.Itinerary;
 import com.example.jobservice.model.Job;
+import com.example.jobservice.model.Position;
 import com.example.jobservice.service.JobService;
 import com.example.jobservice.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -34,11 +37,21 @@ public class JobController {
     public Optional<Job> getJob(@PathVariable Long id){
         Optional<Job> job = jobService.getJob(id);
         if (job.isPresent()){
-            job.get().setItineraries(mapService.getItineraries());
+            Job jobTemp = job.get();
+            if (jobTemp.getId()>=1000){
+                jobTemp.setAddress(jobTemp.getAddress()+ ", Australia");
+            }
+            jobTemp.setPosition(mapService.getPosition(jobTemp.getAddress()));
         }
         return job;
     }
 
+    @GetMapping("/{id}/itinerary")
+    public Map<String,Itinerary> getJobWithItinerary(@PathVariable Long id, @RequestParam String start, @RequestParam String end){
+        Position positionStart = mapService.getPosition(start);
+        Position positionEnd = mapService.getPosition(end);
+        return mapService.getItineraries(positionStart, positionEnd);
+    }
 
     @PostMapping
     public void postJob(@RequestBody Job job){

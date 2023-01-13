@@ -27,21 +27,16 @@ public class MapService {
     public MapService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-
-
-    public Map<String, Itinerary> getItineraries(){
+    
+    public Position getPosition(String address){
         Gson gson = new Gson();
+        Position result = gson.fromJson(restTemplate.getForObject(base+"geocode?address="+address, String.class), Position.class);
+        return result;
+    }
 
-        //convert json string to object
-      /*  try {
-            Itinerary itineraryWalk = objectMapper.readValue(restTemplate.getForObject(base+"walk?startLat="+userAddress.getLat()+"&startLong="+userAddress.getLng()+"&endLat="+jobAddress.getLat()+"&endLong="+jobAddress.getLng(), String.class), Itinerary.class);
-            Map<String, Itinerary> result = new HashMap<>();
-            result.put("walk", itineraryWalk);
-            return result;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
-        Itinerary itineraryWalk = gson.fromJson(restTemplate.getForObject(base+"walk?startLat="+userAddress.getLat()+"&startLong="+userAddress.getLng()+"&endLat="+jobAddress.getLat()+"&endLong="+jobAddress.getLng(), String.class), Itinerary.class);
+    public Map<String, Itinerary> getItineraries(Position jobAddress, Position userAddress){
+        Gson gson = new Gson();
+        Itinerary itineraryWalk = gson.fromJson (restTemplate.getForObject(base+"walk?startLat="+userAddress.getLat()+"&startLong="+userAddress.getLng()+"&endLat="+jobAddress.getLat()+"&endLong="+jobAddress.getLng(), String.class), Itinerary.class);
         Itinerary itineraryDrive = gson.fromJson(restTemplate.getForObject(base+"drive?startLat="+userAddress.getLat()+"&startLong="+userAddress.getLng()+"&endLat="+jobAddress.getLat()+"&endLong="+jobAddress.getLng(), String.class), Itinerary.class);
         Itinerary itineraryTransit = gson.fromJson(restTemplate.getForObject(base+"transit?startLat="+userAddress.getLat()+"&startLong="+userAddress.getLng()+"&endLat="+jobAddress.getLat()+"&endLong="+jobAddress.getLng(), String.class), Itinerary.class);
         Map<String, Itinerary> result = new HashMap<>();
