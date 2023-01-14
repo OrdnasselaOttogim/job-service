@@ -2,15 +2,11 @@ package com.example.jobservice.service;
 
 import com.example.jobservice.model.Itinerary;
 import com.example.jobservice.model.Position;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,19 +15,16 @@ public class MapService {
 
     private final String base = "http://localhost:9080/api/v1/itinerary/";
 
-    Position userAddress = new Position(46.06672925347145,11.149817900662818);
-    Position jobAddress = new Position(46.06726990853974,11.12143499033619);
     private final RestTemplate restTemplate;
 
     @Autowired
     public MapService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    
+
     public Position getPosition(String address){
         Gson gson = new Gson();
-        Position result = gson.fromJson(restTemplate.getForObject(base+"geocode?address="+address, String.class), Position.class);
-        return result;
+        return gson.fromJson(restTemplate.getForObject(base+"geocode?address="+address, String.class), Position.class);
     }
 
     public Map<String, Itinerary> getItineraries(Position jobAddress, Position userAddress){
