@@ -2,17 +2,75 @@ version: "3.9"
 
 services:
   job-service:
-    image: job-service
+    image: "job-service"
+    networks:
+      - jobs-net
     depends_on:
       - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/job
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+
+  api-gateway:
+    image: "api-gateway"
+    networks:
+      - jobs-net
     ports:
-      - "8082:8082"
+      - "8085:8085"
+
+
+  oauth-service:
+    networks:
+      - jobs-net
+    image: "oauth-service"
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/job
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+
+  user-authorization-service:
+    networks:
+      - jobs-net
+    image: "user-authorization-service"
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/job
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  frontend-jobs:
+    networks:
+      - jobs-net
+    image: "frontend-jobs"
+    ports:
+      - "3000:3000"
+
+  itinerary:
+    image: "itinerary"
+    networks:
+      - jobs-net
+
   postgres:
     image: postgres
-    environment:
-      - DB_URL=jdbc:postgresql://localhost:5432/job
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=job
+    networks:
+      - jobs-net
+
+
+networks:
+  jobs-net:
 

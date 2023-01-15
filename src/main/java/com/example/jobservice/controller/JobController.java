@@ -1,24 +1,27 @@
 package com.example.jobservice.controller;
-
 import com.example.jobservice.model.Itinerary;
 import com.example.jobservice.model.Job;
 import com.example.jobservice.model.Position;
 import com.example.jobservice.service.JobService;
 import com.example.jobservice.service.MapService;
+import com.example.jobservice.model.Job;
+import com.example.jobservice.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
+
 @RestController
-@RequestMapping(path = "/api/v1/job")
+@RequestMapping(path = "api/v1/job")
 @CrossOrigin
 public class JobController {
 
 
     private final JobService jobService;
+
     private final MapService mapService;
     @Autowired
     public JobController(JobService jobService, MapService mapService) {
@@ -35,6 +38,7 @@ public class JobController {
 
     @GetMapping("/{id}")
     public Optional<Job> getJob(@PathVariable Long id){
+
         Optional<Job> job = jobService.getJob(id);
         if (job.isPresent()){
             Job jobTemp = job.get();
@@ -52,6 +56,7 @@ public class JobController {
         Position positionEnd = mapService.getPosition(end);
         return mapService.getItineraries(positionStart, positionEnd);
     }
+
 
     @PostMapping
     public void postJob(@RequestBody Job job){

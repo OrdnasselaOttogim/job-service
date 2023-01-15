@@ -3,8 +3,6 @@ package com.example.jobservice.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Map;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +22,10 @@ public class Job {
     private String address;
     private String category;
 
+
     @Transient
     private Position position;
+
 
     public Job(String title, String description, String address, String category) {
         this.title = title;
@@ -34,7 +34,9 @@ public class Job {
         this.category = category;
     }
 
+
     public void setPosition(Position position){
         this.position = position;
     }
+
 }
