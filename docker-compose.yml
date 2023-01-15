@@ -48,13 +48,16 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   frontend-jobs:
-    container_name: frontend-jobs
     networks:
       - jobs-net
     image: "frontend-jobs"
     ports:
       - "3000:3000"
 
+  itinerary:
+    image: "itinerary"
+    networks:
+      - jobs-net
 
   postgres:
     image: postgres
