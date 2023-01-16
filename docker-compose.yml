@@ -72,6 +72,13 @@ services:
     ports:
       - "9080:9080"
 
+  libretranslate:
+    image: "libretranslate"
+    networks:
+      - jobs-net
+
+
+
   postgres:
     image: postgres
     ports:
@@ -82,8 +89,8 @@ services:
       - POSTGRES_DB=job
     networks:
       - jobs-net
-    #volumes:
-    #  - ./postgres-data:/var/lib/postgresql/data
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
 
 
 networks:
