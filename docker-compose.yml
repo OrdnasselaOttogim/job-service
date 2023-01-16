@@ -15,6 +15,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - ITINERARY_SERVICE_URL=http://itinerary-service:9080
 
 
   api-gateway:
@@ -64,9 +65,12 @@ services:
       - "80:3000"
 
   itinerary:
+    hostname: itinerary-service
     image: "itinerary"
     networks:
       - jobs-net
+    ports:
+      - "9080:9080"
 
   postgres:
     image: postgres
