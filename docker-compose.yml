@@ -35,6 +35,9 @@ services:
     networks:
       - jobs-net
     image: "oauth-service"
+    #hostname: oauth-service
+    ports:
+      - "8080:8080"
     depends_on:
       - postgres
     environment:
@@ -63,6 +66,8 @@ services:
     image: "frontend-jobs"
     ports:
       - "80:3000"
+    environment:
+      - REACT_APP_OAUTH_SERVICE_URL=http://localhost:8080
 
   itinerary:
     hostname: itinerary-service
