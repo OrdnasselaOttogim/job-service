@@ -1,0 +1,1 @@
+COPY job FROM '/docker-entrypoint-initdb.d/seek_australia.csv' WITH (FORMAT CSV);

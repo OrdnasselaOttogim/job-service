@@ -87,6 +87,7 @@ services:
       - CORS_ORIGIN_WHITELIST=http://0.0.0.0:*
 
 
+
   postgres:
     image: postgres
     ports:
@@ -98,8 +99,8 @@ services:
     networks:
       - jobs-net
     volumes:
+      - ./initdb:/docker-entrypoint-initdb.d/
       - ./postgres-data:/var/lib/postgresql/data
-     # - "C:/Users/Aldin/Desktop/SDE/Data:/var/lib/postgresql/data"
 
 
 networks:
